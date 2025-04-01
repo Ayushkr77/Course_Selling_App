@@ -1,5 +1,6 @@
 const express=require("express");
 const mongoose = require("mongoose");
+const dotenv=require("dotenv");
 
 // const {userRouter}=require("./routes/user");
 const {userRouter}=require("./routes/user")
@@ -10,6 +11,8 @@ const {courseRouter}=require("./routes/course")
 const {adminRouter}=require("./routes/admin");
 
 
+
+dotenv.config();
 
 const app=express();
 
@@ -74,10 +77,10 @@ app.use("/course",courseRouter);
 
 
 async function main() {
-    await mongoose.connect("mongodb+srv://ayushkumar5990:Ayush1122@ayushcluster.oqlymuy.mongodb.net/coursera-app");
+    await mongoose.connect(process.env.MONGO_URI);
     console.log("Connected to the database");
 
-    app.listen(3000, () => {
+    app.listen(process.env.PORT  || 3000, () => {
         console.log("Server is listening on port 3000");
     });
 }
