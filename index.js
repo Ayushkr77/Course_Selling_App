@@ -6,6 +6,8 @@ const {userRouter}=require("./routes/user")
 // const {createCourseRoutes}=require("./routes/course");
 const {courseRouter}=require("./routes/course")
 
+const {adminRouter}=require("./routes/admin");
+
 
 
 const app=express();
@@ -56,6 +58,10 @@ app.use("/user",userRouter);
 //         "message": "User created successfully",
 //     })
 // })
+
+
+
+app.use(adminRouter);
 
 
 // createCourseRoutes(app);
