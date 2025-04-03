@@ -17,6 +17,9 @@ dotenv.config();
 const app=express();
 
 
+app.use(express.json());
+
+
 
 
 // app.post("/user/signup",(req,res)=> {
