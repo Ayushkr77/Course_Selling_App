@@ -4,8 +4,11 @@ const bcrypt = require("bcrypt");
 const {z} = require("zod");
 const jwt = require("jsonwebtoken");
 
+const {JWT_ADMIN_PASSWORD}=require("../config");
 
-const JWT_ADMIN_PASSWORD="123456789";
+
+// password in config.js
+// const JWT_ADMIN_PASSWORD="123456789";  // why different from JWT_USER_PASSWORD?
 
 const adminRouter=Router();
 

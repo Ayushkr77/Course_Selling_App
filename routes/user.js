@@ -41,7 +41,10 @@ const bcrypt = require("bcrypt");
 const {z} = require("zod");
 const jwt = require("jsonwebtoken");
 
-const JWT_USER_PASSWORD="userSecret";
+const {JWT_USER_PASSWORD}=require("../config");
+
+// password in config.js
+// const JWT_USER_PASSWORD="userSecret";
 
 
 const userRouter=Router();
