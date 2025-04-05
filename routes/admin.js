@@ -146,10 +146,21 @@ adminRouter.put("/", adminMiddleware, async (req,res)=> {
     })
 })
 
-adminRouter.get("/bulk",(req,res)=> {
-    res.json({
-        "message": "Admin courses",
-    })
+
+// Get all the courses
+adminRouter.get("/bulk", async (req,res)=> {
+    const adminId = req.userId;
+
+    // Find all courses with the given creatorId
+    const courses = await courseModel.find({
+        creatorId: adminId,
+    });
+
+    // Respond with the courses if they are found successfully
+    res.status(200).json({
+        "message":"All courses",
+        courses: courses,
+    });
 })
 
 module.exports={
