@@ -68,7 +68,7 @@ app.use("/user",userRouter);
 
 
 
-app.use(adminRouter);  // added admin router
+app.use("/admin",adminRouter);  // added admin router
 
 
 // createCourseRoutes(app);

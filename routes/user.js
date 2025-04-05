@@ -90,7 +90,7 @@ userRouter.post("/signup",async (req,res)=> {  // no need to write /user/signup
 
 userRouter.post("/signin", async (req,res)=> {
     const {email, password}=req.body;
-    const user = await userModel.findOne({ 
+    const user = await userModel.findOne({   // difference between find and findOne
         email 
     });
 
