@@ -4,6 +4,9 @@ const bcrypt = require("bcrypt");
 const {z} = require("zod");
 const jwt = require("jsonwebtoken");
 
+const { adminMiddleware } = require("../middleware/admin");
+
+
 const {JWT_ADMIN_PASSWORD}=require("../config");
 
 
@@ -12,7 +15,7 @@ const {JWT_ADMIN_PASSWORD}=require("../config");
 
 const adminRouter=Router();
 
-adminRouter.post("/signup",async (req,res)=> {  
+adminRouter.post("/signup", async (req,res)=> {  
     // const { email, password, firstName, lastName } = req.body;
     
     const reqBody=z.object({
@@ -82,13 +85,31 @@ adminRouter.post("/signin",async (req,res)=> {
     }
 })
 
-adminRouter.post("/",(req,res)=> {
+
+// Creating a course
+adminRouter.post("/", adminMiddleware, async (req,res)=> {
+
+    const adminId = req.userId;
+
+    const { title, description, imageUrl, price } = req.body;
+
+    const course = await courseModel.create({
+        title,
+        description,
+        imageUrl,
+        price,
+        creatorId: adminId,
+    });
+
     res.json({
-        "message": "Admin",
+        "message": "Course created",
+        courseId: course._id
     })
 })
 
-adminRouter.put("/",(req,res)=> {
+
+// Updating a course
+adminRouter.put("/", adminMiddleware, (req,res)=> {
     res.json({
         "message": "Admin changed the course",
     })
