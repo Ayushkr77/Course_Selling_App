@@ -109,9 +109,40 @@ adminRouter.post("/", adminMiddleware, async (req,res)=> {
 
 
 // Updating a course
-adminRouter.put("/", adminMiddleware, (req,res)=> {
+adminRouter.put("/", adminMiddleware, async (req,res)=> {
+    const adminId = req.userId;
+
+    const { courseId, title, description, imageUrl, price } = req.body;
+
+    const course = await courseModel.findOne({
+        _id: courseId, // Match the course by ID
+        creatorId: adminId, // Ensure the admin is the creator
+    });
+
+    // If the course is not found, respond with an error message
+    if (!course) {
+        return res.status(404).json({
+            message: "Course not found!", // Inform the client that the specified course does not exist
+        });
+    }
+
+
+    await courseModel.updateOne(
+        {
+            _id: courseId, // Match the course by ID
+            creatorId: adminId, // Ensure the admin is the creator
+        },
+        { 
+            title: title || course.title, // Update title if provided, otherwise keep the existing title
+            description: description || course.description, // Update description if provided, otherwise keep the existing description
+            imageUrl: imageUrl || course.imageUrl, // Update imageUrl if provided, otherwise keep the existing imageUrl
+            price: price || course.price, // Update price if provided, otherwise keep the existing price
+         } 
+    );
+
     res.json({
-        "message": "Admin changed the course",
+        "message": "Admin updated the course",
+        courseId: course._id
     })
 })
 
