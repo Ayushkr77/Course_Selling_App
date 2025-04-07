@@ -67,8 +67,8 @@ userRouter.post("/signup",async (req,res)=> {  // no need to write /user/signup
         })
     }
 
-    const { email, password, firstName, lastName } = req.body;
-    // const { email, password, firstName, lastName } = result.data;
+    // const { email, password, firstName, lastName } = req.body;   // Raw data directly from the client request. If you instead use req.body, you bypass validation, defeating the purpose of using Zod.
+    const { email, password, firstName, lastName } = result.data;   // Data that has been validated and parsed using Zod. If the validation passes, result.data contains the sanitized, type-safe object.
 
     const hashedPassword=await bcrypt.hash(password, 5);
 
@@ -91,7 +91,25 @@ userRouter.post("/signup",async (req,res)=> {  // no need to write /user/signup
     })
 })
 
+
+
 userRouter.post("/signin", async (req,res)=> {
+    const requireBody = z.object({
+        email: z.string().email(), // Email must be a valid email format
+        password: z.string().min(6), // Password must be at least 6 characters long
+    });
+
+    // Parse and validate the incoming request body data
+    const parseDataWithSuccess = requireBody.safeParse(req.body);
+
+    // If validation fails, return a 400 error with the validation error details
+    if (!parseDataWithSuccess.success) {
+        return res.json({
+            message: "Incorrect data format",
+            error: parseDataWithSuccess.error, // Provide details about the validation error
+        });
+    }
+
     const {email, password}=req.body;
     const user = await userModel.findOne({   // difference between find and findOne
         email 
@@ -119,7 +137,9 @@ userRouter.post("/signin", async (req,res)=> {
     }
 })
 
-userRouter.post("/purchases",(req,res)=> {  // to see the purchased courses
+
+
+userRouter.get("/purchases", (req,res)=> {  // to see the purchased courses
     res.json({
         "message": "Purchased courses",
     })
