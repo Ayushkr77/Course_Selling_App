@@ -6,6 +6,8 @@ const jwt = require("jsonwebtoken");
 
 const { adminMiddleware } = require("../middleware/admin");
 
+const {courseModel}= require("../db");
+
 
 const {JWT_ADMIN_PASSWORD}=require("../config");
 
@@ -57,6 +59,10 @@ adminRouter.post("/signup", async (req,res)=> {
     })
 })
 
+
+
+
+
 adminRouter.post("/signin",async (req,res)=> {
     const {email, password}=req.body;
     const admin = await adminModel.findOne({   // difference between find and findOne
@@ -86,8 +92,10 @@ adminRouter.post("/signin",async (req,res)=> {
 })
 
 
+
+
 // Creating a course
-adminRouter.post("/", adminMiddleware, async (req,res)=> {
+adminRouter.post("/create", adminMiddleware, async (req,res)=> {
 
     const adminId = req.userId;
 
@@ -109,7 +117,7 @@ adminRouter.post("/", adminMiddleware, async (req,res)=> {
 
 
 // Updating a course
-adminRouter.put("/", adminMiddleware, async (req,res)=> {
+adminRouter.put("/update", adminMiddleware, async (req,res)=> {
     const adminId = req.userId;
 
     const { courseId, title, description, imageUrl, price } = req.body;
