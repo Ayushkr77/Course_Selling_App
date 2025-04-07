@@ -156,7 +156,7 @@ adminRouter.put("/update", adminMiddleware, async (req,res)=> {
 
 
 // Get all the courses
-adminRouter.get("/bulk", async (req,res)=> {
+adminRouter.get("/bulk", adminMiddleware, async (req,res)=> {
     const adminId = req.userId;
 
     // Find all courses with the given creatorId
@@ -167,7 +167,7 @@ adminRouter.get("/bulk", async (req,res)=> {
     // Respond with the courses if they are found successfully
     res.status(200).json({
         "message":"All courses",
-        courses: courses,
+        courses
     });
 })
 
