@@ -17,9 +17,10 @@ const {JWT_ADMIN_PASSWORD}=require("../config");
 
 const adminRouter=Router();
 
+
+
 adminRouter.post("/signup", async (req,res)=> {  
-    // const { email, password, firstName, lastName } = req.body;
-    
+
     const reqBody=z.object({
         email: z.string().min(3).email(),
         password: z.string().min(3),
@@ -35,8 +36,8 @@ adminRouter.post("/signup", async (req,res)=> {
         })
     }
 
-    const { email, password, firstName, lastName } = req.body;
-    // const { email, password, firstName, lastName } = result.data;
+    // const { email, password, firstName, lastName } = req.body;
+    const { email, password, firstName, lastName } = result.data;
 
     const hashedPassword=await bcrypt.hash(password, 5);
 
@@ -97,7 +98,7 @@ adminRouter.post("/signin",async (req,res)=> {
 // Creating a course
 adminRouter.post("/create", adminMiddleware, async (req,res)=> {
 
-    const adminId = req.userId;
+    const adminId = req.userId;  // see adminMiddleware
 
     const { title, description, imageUrl, price } = req.body;
 
@@ -135,7 +136,7 @@ adminRouter.put("/update", adminMiddleware, async (req,res)=> {
     }
 
 
-    await courseModel.updateOne(
+    await courseModel.updateOne(  // Syntax: Model.updateOne(filter, update, options).   filter: Which document(s) you want to update.update: What fields you want to change.  options (optional): Extra settings like { upsert: true }, etc.
         {
             _id: courseId, // Match the course by ID
             creatorId: adminId, // Ensure the admin is the creator
@@ -155,7 +156,7 @@ adminRouter.put("/update", adminMiddleware, async (req,res)=> {
 })
 
 
-// Get all the courses
+// Get all the Admin’s courses
 adminRouter.get("/bulk", adminMiddleware, async (req,res)=> {
     const adminId = req.userId;
 

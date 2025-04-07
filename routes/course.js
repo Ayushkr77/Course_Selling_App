@@ -76,10 +76,9 @@ courseRouter.get("/preview", async (req, res) => {    // view available courses,
     // Query the database to get all the courses available for purchase
     const courses = await courseModel.find({});
 
-    // Return the queried course details as a JSON response to the client with a 200 status code
     res.status(200).json({
         "message":"Available courses",
-        courses: courses, // Send the course details back to the client
+        courses: courses, 
     });
 });
 
